@@ -52,11 +52,14 @@
 		<resource>
 			<directory>src/main/resources</directory>
 			<filtering>true</filtering>
+			<excludes>
+				<exclude>filters/*</exclude>
+			</excludes>
 		</resource>
 	</resources>
-	<filters>
-		<filter>src/main/resources/filters/${running.env}.properties</filter>
-	</filters>
+<!-- 	<filters> -->
+<!-- 		<filter>src/main/resources/filters/${running.env}.properties</filter> -->
+<!-- 	</filters> -->
   </build>
   
   <profiles>
@@ -69,6 +72,12 @@
 		<activation>
 			<activeByDefault>true</activeByDefault><!-- 这里表示默认环境 -->
 		</activation>
+	<build>
+		<filters>
+			<filter>src/main/resources/filters/stage.properties</filter>
+		</filters>
+	</build>
+	
 	</profile>
 	<!-- 测试环境 -->
 	<profile>
