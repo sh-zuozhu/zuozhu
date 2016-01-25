@@ -47,5 +47,42 @@
 	   	<version>2.6</version>
 	   </plugin>
   	</plugins>
+  	
+	<resources>
+		<resource>
+			<directory>src/main/resources</directory>
+			<filtering>true</filtering>
+		</resource>
+	</resources>
+	<filters>
+		<filter>src/main/resources/filters/${running.env}.properties</filter>
+	</filters>
   </build>
+  
+  <profiles>
+	<!-- 开发环境，默认激活 -->
+	<profile>
+		<id>stage</id>
+		<properties>
+			<running.env>stage</running.env>
+		</properties>
+		<activation>
+			<activeByDefault>true</activeByDefault><!-- 这里表示默认环境 -->
+		</activation>
+	</profile>
+	<!-- 测试环境 -->
+	<profile>
+		<id>test</id>
+		<properties>
+			<running.env>test</running.env>
+		</properties>
+	</profile>
+	<!-- 生产环境 -->
+	<profile>
+		<id>prd</id>
+		<properties>
+			<running.env>prd</running.env>
+		</properties>
+	</profile>
+</profiles>
 </project>
