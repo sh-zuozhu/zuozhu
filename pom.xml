@@ -234,6 +234,11 @@
       <artifactId>commons-fileupload</artifactId>
       <version>1.2</version>
     </dependency>
+    <dependency>
+            <groupId>com.squareup.retrofit</groupId>
+            <artifactId>retrofit</artifactId>
+            <version>1.9.0</version>
+    </dependency>
     <!-- 分页助手 通用mapper -->
     <dependency>
       <groupId>com.github.pagehelper</groupId>

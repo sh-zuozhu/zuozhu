@@ -1,4 +1,4 @@
-package com.xiaya.core.utils;
+package com.xiaya.core.httputils;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -28,6 +28,7 @@ import com.xiaya.core.factory.HttpClientFactory;
 import com.xiaya.core.http.RequestIdentityHolder;
 import com.xiaya.core.pojo.RequestInfo;
 import com.xiaya.core.pojo.StatusCode;
+import com.xiaya.core.utils.ObjectUtils;
 
 public class HttpClientUtils {
 

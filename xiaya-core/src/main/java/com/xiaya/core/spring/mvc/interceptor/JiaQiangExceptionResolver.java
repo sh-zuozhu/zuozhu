@@ -11,6 +11,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xiaya.core.exception.B5mException;
+import com.xiaya.core.exception.UserTokenInvalidException;
 import com.xiaya.core.pojo.ActionResult;
 import com.xiaya.core.pojo.StatusCode;
 import com.xiaya.core.spring.mvc.support.JsonResult;
@@ -28,6 +29,9 @@ public class JiaQiangExceptionResolver implements HandlerExceptionResolver {
 		}else if(exception instanceof B5mException){
 			errorCode = ((B5mException)exception).getCode();
 			errorMsg =  ((B5mException)exception).getMessage();
+		}else if(exception instanceof UserTokenInvalidException){
+			errorCode = ((UserTokenInvalidException)exception).getCode();
+			errorMsg = ((UserTokenInvalidException)exception).getMessage();
 		}else{
 			errorCode =  hasJsonResult && StringUtils.isNotEmpty(jsonResult.errorCode()) ? jsonResult.errorCode() : StatusCode.SERVER_ERROR_CODE;
 			errorMsg = hasJsonResult && StringUtils.isNotEmpty(jsonResult.desc()) ? (jsonResult.desc() + "执行失败") : StatusCode.SERVER_ERROR.getMessage();

@@ -79,4 +79,5 @@
         <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
 	</bean>
 	<bean class="com.xiaya.core.utils.ContextUtils"/>
+	<bean class="com.xiaya.core.httputils.RetrofitHttpConfiguration"/>
 </beans>

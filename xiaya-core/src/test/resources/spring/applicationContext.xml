@@ -82,7 +82,8 @@
 	
 
 	<bean class="com.xiaya.core.factory.HttpClientFactory" />
-	<bean class="com.xiaya.core.utils.HttpClientUtils" />
+	<bean class="com.xiaya.core.httputils.HttpClientUtils" />
 	<bean class="com.xiaya.core.utils.ContextUtils"/>
 	<bean class="com.xiaya.core.utils.RedisUtils"/>
+	<bean class="com.xiaya.core.httputils.RetrofitHttpConfiguration"/>
 </beans>

@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.xiaya.core.annotation.UserToken;
+import com.xiaya.core.model.User;
 import com.xiaya.core.pojo.ActionResult;
 import com.xiaya.core.pojo.StatusCode;
 import com.xiaya.core.spring.mvc.support.JsonResult;
@@ -36,8 +38,8 @@ public class UserCenterController {
 	
 	@JsonResult(desc="获取用户信息")
 	@RequestMapping("user")
-	public ActionResult getUser(String account){
-		UserCenter user = this.userCenterService.getUserByMobile(account);
-		return new ActionResult(StatusCode.SUCCESS_CODE, "query success", user);
+	public ActionResult getUser(@UserToken User user,  String account){
+		UserCenter uc = this.userCenterService.getUserByMobile(account);
+		return new ActionResult(StatusCode.SUCCESS_CODE, "query success", uc);
 	}
 }

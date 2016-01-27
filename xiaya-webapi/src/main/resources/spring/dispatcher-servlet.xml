@@ -13,8 +13,12 @@
 	
 	<!-- 注解驱动 -->
 <!-- 	<context:annotation-config/> -->
-<!-- 	<mvc:annotation-driven/> -->
-
+<!-- <mvc:annotation-driven> -->
+<!-- 		<mvc:argument-resolvers> -->
+<!-- 			<bean class="com.xiaya.core.controller.bind.method.annotation.UserTokenMethodArgumentResolver"/> -->
+<!-- 		</mvc:argument-resolvers> -->
+<!-- 	</mvc:annotation-driven> -->
+	
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	
 	<!-- 扫描包 -->
@@ -56,6 +60,12 @@
 				<ref bean="jsonResultHandler" />
 			</list>
 		</property>
+		<property name="synchronizeOnSession" value="true" />
+		<property name="customArgumentResolvers">
+			<list>
+				<bean class="com.xiaya.core.controller.bind.method.annotation.UserTokenMethodArgumentResolver"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
@@ -68,5 +78,8 @@
 	
 	<!-- 异常处理 -->
 	<bean class="com.xiaya.core.spring.mvc.interceptor.ActionExceptionResolver"/>
+	
+	
+	
 
 </beans>
