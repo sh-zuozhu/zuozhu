@@ -36,9 +36,16 @@ public class UserCenterController {
 	}
 	
 	
+//	@JsonResult(desc="获取用户信息")
+//	@RequestMapping("user/user")
+//	public ActionResult getUcenter(@UserToken User user,  String account){
+//		UserCenter uc = this.userCenterService.getUserByMobile(account);
+//		return new ActionResult(StatusCode.SUCCESS_CODE, "query success", uc);
+//	}
+	
 	@JsonResult(desc="获取用户信息")
 	@RequestMapping("user")
-	public ActionResult getUser(@UserToken User user,  String account){
+	public ActionResult getUser(String account){
 		UserCenter uc = this.userCenterService.getUserByMobile(account);
 		return new ActionResult(StatusCode.SUCCESS_CODE, "query success", uc);
 	}
