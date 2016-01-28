@@ -11,5 +11,15 @@
 	    <groupId>com.xiaya</groupId>
 	    <artifactId>xiaya-service</artifactId>
   	</dependency>
+	<dependency>
+		<groupId>com.b5m</groupId>
+		<artifactId>b5m-log</artifactId>
+		<version>0.3.4</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate</artifactId>
+		<version>3.6.0.Final</version>
+	</dependency>
   </dependencies>
 </project>
