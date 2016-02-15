@@ -1,5 +1,6 @@
 package com.xiaya.core.utils;
 
+
 public class PWCodeTest {
 	
 	
@@ -15,6 +16,8 @@ public class PWCodeTest {
 			//登录注册加密后的密码
 			String password = PWCode.getMD5String("111111");
 			System.out.println(password);
+			String pwd = PWCode.getMD5Code_64(PWCode.getMD5String("123456"));
+			System.out.println(pwd);
 		}
 
 }

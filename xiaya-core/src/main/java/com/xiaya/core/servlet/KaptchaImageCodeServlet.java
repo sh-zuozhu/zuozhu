@@ -1,19 +1,26 @@
 package com.xiaya.core.servlet;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -48,13 +55,63 @@ public class KaptchaImageCodeServlet extends HttpServlet implements Servlet{
 		this.kaptchaProducer = config.getProducerImpl();
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response){
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setDateHeader("Expires", 0);
 		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
 		response.setHeader("pragma", "no-cache");
 		response.setContentType("image/jpeg");
+		
+		/********************获取request所用信息***************************************/
+		Object attribute = request.getAttribute("name");
+		Enumeration attributeNames = request.getAttributeNames();
+		String authType = request.getAuthType();
+		String characterEncoding = request.getCharacterEncoding();
+		int contentLength = request.getContentLength();
+		String contentType = request.getContentType();
+		String contextPath = request.getContextPath();
+		Cookie[] cookies = request.getCookies();
+		//long dateHeader = request.getDateHeader("Accept");
+		String header = request.getHeader("Cookie");
+		Enumeration headerNames = request.getHeaderNames();
+		Enumeration headers = request.getHeaders("Accept-Encoding");
+		ServletInputStream inputStream = request.getInputStream();
+//		int intHeader = request.getIntHeader("Host");
+		String localAddr = request.getLocalAddr();
+		Locale locale = request.getLocale();
+		Enumeration locales = request.getLocales();
+		String localName = request.getLocalName();
+		int localPort = request.getLocalPort();
+		String method = request.getMethod();
+		String parameter = request.getParameter("user");
+		Map parameterMap = request.getParameterMap();
+		Enumeration parameterNames = request.getParameterNames();
+		String[] parameterValues = request.getParameterValues("user");
+		String pathInfo = request.getPathInfo();
+		String pathTranslated = request.getPathTranslated();
+		String protocol = request.getProtocol();
+		String queryString = request.getQueryString();
+//		BufferedReader reader = request.getReader();
+		String remoteAddr = request.getRemoteAddr();
+		String remoteHost = request.getRemoteHost();
+		int remotePort = request.getRemotePort();
+		String remoteUser = request.getRemoteUser();
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/");
+		String requestedSessionId = request.getRequestedSessionId();
+		String requestURI = request.getRequestURI();
+		StringBuffer requestURL = request.getRequestURL();
+		String scheme = request.getScheme();
+		String serverName = request.getServerName();
+		int serverPort = request.getServerPort();
+		String servletPath = request.getServletPath();
+		HttpSession session = request.getSession();
+		HttpSession session2 = request.getSession(true);
+		Principal userPrincipal = request.getUserPrincipal();
+		System.out.println(userPrincipal);
+		
+		/********************获取request所用信息***************************************/
 		
 		ServletOutputStream out = null;
 		//创建有文字的图片
