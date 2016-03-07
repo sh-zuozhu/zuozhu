@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.xiaya.core.annotation.UserToken;
-import com.xiaya.core.model.User;
 import com.xiaya.core.pojo.ActionResult;
 import com.xiaya.core.pojo.StatusCode;
 import com.xiaya.core.spring.mvc.support.JsonResult;

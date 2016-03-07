@@ -10,7 +10,6 @@
   	<module>xiaya-model</module>
   	<module>xiaya-dao</module>
   	<module>xiaya-service</module>
-  	<module>xiaya-api</module>
   	<module>xiaya-rpc-interface</module>
   	<module>xiaya-webapi</module>
   </modules>

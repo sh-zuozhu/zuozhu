@@ -55,16 +55,16 @@
 				<ref bean="stringHttpMessageConverter" />
 			</list>
 		</property>
-<!-- 		<property name="customReturnValueHandlers"> -->
-<!-- 			<list> -->
-<!-- 				<ref bean="jsonResultHandler" /> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
 		<property name="customReturnValueHandlers">
 			<list>
-				<bean class="com.xiaya.core.spring.mvc.support.JsonResultHandler2"/>
+				<ref bean="jsonResultHandler" />
 			</list>
 		</property>
+<!-- 		<property name="customReturnValueHandlers"> -->
+<!-- 			<list> -->
+<!-- 				<bean class="com.xiaya.core.spring.mvc.support.JsonResultHandler2"/> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
 		<property name="synchronizeOnSession" value="true" />
 		<property name="customArgumentResolvers">
 			<list>
