@@ -57,16 +57,26 @@
 		input.onblur=function(){
 			document.getElementById("username").innerHTML="<font color = 'red'>用户名不能为空</font>";
 		}
+		
+		
 	}
-	onload = function(){
-		window.setInterval("setTime()", 1000);
-	}
+	//onload = function(){
+	//	window.setInterval("setTime()", 1000);
+	//}
 	function setTime(){
 		var data = new Date();
 		document.getElementById("div3").innerHTML=data.toLocaleDateString()+data.toLocaleTimeString();
 	}
 	function demo2(){
 		window.open("/page/window.html");
+	}
+	function showPic(whichPic){
+// 		document.getElementById("placeholder").setAttribute("src", whichPic.getAttribute("t_href"));
+		document.getElementById("placeholder").src=whichPic.getAttribute("href");
+		var descripte = document.getElementById("descripte");
+		var title = whichPic.getAttribute("title");
+//		descripte.childNodes[0].nodeValue=title;
+		descripte.firstChild.nodeValue=title;
 	}
 </script>
 
@@ -99,7 +109,11 @@
 	</dl>
 	<br>
 	<img alt="你好" src="http://q.qlogo.cn/qqapp/100243301/B2DA55DB66F90E022B21BAD0FA7C1FD1/100">
+	
+	<a  href="http://q.qlogo.cn/qqapp/100243301/B2DA55DB66F90E022B21BAD0FA7C1FD1/100" title="my image" onclick="showPic(this);return false;">firework</a>
 	<br>
+	<img id="placeholder" alt="my image gallery" src="">
+	<p id="descripte">图片描述</p>
 	<table border="1" width="70%" align="center">
 		<tr>
 			<td>1</td>

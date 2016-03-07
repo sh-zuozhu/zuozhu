@@ -115,6 +115,7 @@ public class JsonResultHandler implements HandlerMethodReturnValueHandler {
 		if (returnValue instanceof JsonResultWrapper) { // 包装器类型返回值
 			value = JsonUtils.toJson(((JsonResultWrapper)returnValue).getData());
 		}else { // 其他未知类型均默认渲染到JSON
+			
 			value = JsonUtils.toJson(returnValue);
 		}
 		return value;
