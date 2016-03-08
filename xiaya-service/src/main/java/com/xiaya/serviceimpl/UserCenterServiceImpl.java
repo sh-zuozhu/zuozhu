@@ -126,7 +126,7 @@ public class UserCenterServiceImpl implements IUserCenterService{
 			return new ActionResult(StatusCode.PARAMS_EEROR_CODE, "您输入的密码不正确");
 		}
 		uc.setLastLoginTime(new Date());
-		this.userCenterMapper.updateByPrimaryKeySelective(uc);
+		this.userCenterMapper.updateByParamsSelective(uc);
 		return new ActionResult(StatusCode.SUCCESS_CODE, "login success");
 	}
 	
