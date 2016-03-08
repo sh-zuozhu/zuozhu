@@ -21,6 +21,10 @@ public class StatusCode implements Serializable {
 	public static final String PARAMETER_EEROR_CODE = "40000000000";
 	public static final StatusCode PARAMETER_EEROR = new StatusCode(PARAMETER_EEROR_CODE);
 	public static final StatusCode DUBBO_SERVICE_EEROR = new StatusCode("50000000001");
+	
+	public static final String PARAMS_EEROR_CODE = "40010000002";
+	public static final String PARAMS_EMPTY_CODE = "40010000003";
+	public static final String PARAMS_NOT_VALIDATE_CODE = "40010000004";
 	/***********************用户中心相关状态码**********************************/
 	public static final String NO_LOGIN = "40010000001";
 	/***********************用户中心相关状态码**********************************/
