@@ -55,4 +55,10 @@ public class UserCenterController {
 	public ActionResult register(UserCenter userCenter, String mobileCode){
 		return this.userCenterService.register(userCenter, mobileCode);
 	}
+	
+	@JsonResult(desc = "用户登录")
+	@RequestMapping("login")
+	public ActionResult login(UserCenter userCenter){
+		return this.userCenterService.login(userCenter);
+	}
 }

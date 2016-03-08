@@ -100,5 +100,34 @@ public class UserCenterServiceImpl implements IUserCenterService{
 				}
 				return new ActionResult(StatusCode.SUCCESS_CODE, "success");
 	}
+
+	/**
+	 * 用户登录
+	 */
+	@Override
+	public ActionResult login(UserCenter userCenter) {
+		//登录校验参数
+		if(null == userCenter) return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "未传入用户信息");
+		if(StringUtils.isEmpty(userCenter.getAccount())) return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "请输入用户名");
+		if(StringUtils.isEmpty(userCenter.getPassword())) return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "请输入密码");
+		String account = userCenter.getAccount();
+		UserCenter uc = null;
+		if(ValidateParamsUtils.regMobile(account)){
+			uc = this.userCenterMapper.selectOne(new UserCenter(account));
+		}else if(ValidateParamsUtils.regEmail(account)){
+			UserCenter record = new UserCenter();
+			record.setEmail(account);
+			uc = this.userCenterMapper.selectOne(record);
+		}
+		if(null == uc){
+			return new ActionResult(StatusCode.PARAMS_EEROR_CODE, "您输入的账户不存在");
+		}
+		if(!uc.getPassword().equals(PWCode.getPassWordCode(userCenter.getPassword()))){
+			return new ActionResult(StatusCode.PARAMS_EEROR_CODE, "您输入的密码不正确");
+		}
+		uc.setLastLoginTime(new Date());
+		this.userCenterMapper.updateByPrimaryKeySelective(uc);
+		return new ActionResult(StatusCode.SUCCESS_CODE, "login success");
+	}
 	
 }

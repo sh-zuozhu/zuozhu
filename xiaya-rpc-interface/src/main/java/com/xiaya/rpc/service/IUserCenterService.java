@@ -20,4 +20,11 @@ public interface IUserCenterService {
 	 */
 	ActionResult register(UserCenter userCenter, String mobileCode);
 
+	/**
+	 * 用户登录
+	 * @param userCenter
+	 * @return
+	 */
+	ActionResult login(UserCenter userCenter);
+
 }
