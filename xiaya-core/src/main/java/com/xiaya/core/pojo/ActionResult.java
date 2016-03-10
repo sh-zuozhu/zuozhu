@@ -16,8 +16,6 @@ public class ActionResult implements Serializable{
 	private String message;
 	//返回结果
 	private Object data;
-	//ok兼容用户中心字段
-	private boolean ok;
 	
 	public ActionResult() {
 		super();
@@ -34,22 +32,6 @@ public class ActionResult implements Serializable{
 		this.code = code;
 		this.message = message;
 		this.data = data;
-	}
-
-	public ActionResult(String code, String message, Object data, boolean ok) {
-		super();
-		this.code = code;
-		this.message = message;
-		this.data = data;
-		this.ok = ok;
-	}
-
-	public boolean getOk() {
-		return ok;
-	}
-
-	public void setOk(boolean ok) {
-		this.ok = ok;
 	}
 
 	public String getCode() {
@@ -78,7 +60,7 @@ public class ActionResult implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ActionResult [code=" + code + ", message=" + message + ", data=" + data + ", ok=" + ok + "]";
+		return "ActionResult [code=" + code + ", message=" + message + ", data=" + data + "]";
 	}
 	
 }

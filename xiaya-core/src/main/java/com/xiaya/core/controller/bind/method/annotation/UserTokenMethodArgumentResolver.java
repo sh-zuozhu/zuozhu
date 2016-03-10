@@ -69,7 +69,7 @@ public class UserTokenMethodArgumentResolver implements HandlerMethodArgumentRes
 			}
 			emptyTokenException(token);
 			ActionResult ar = this.ucenterHttpUtils.getUserId(token);
-			if(null == ar || "false".equals(ar.getOk())){
+			if(null == ar || !ar.getCode().equals(StatusCode.SUCCESS_CODE)){
 				throw new UserTokenInvalidException(StatusCode.NO_LOGIN, "please login");
 			}
 			User user = new User();

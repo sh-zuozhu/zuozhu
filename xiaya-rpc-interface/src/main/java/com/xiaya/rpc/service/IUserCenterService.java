@@ -27,4 +27,26 @@ public interface IUserCenterService {
 	 */
 	ActionResult login(UserCenter userCenter);
 
+	/**
+	 * 校验用户名或者email是否注册过
+	 * @param userCenter
+	 * @return
+	 */
+	ActionResult isNameOrEmailUse(UserCenter userCenter);
+
+	/**
+	 * 验证手机号是否注册过
+	 * @param mobile
+	 * @return
+	 */
+	ActionResult isMobileUse(String mobile);
+
+	/**
+	 * 验证手机号除了自己之外是否注册过
+	 * @param mobile
+	 * @param userId
+	 * @return
+	 */
+	ActionResult isMobileUseExceptMine(String mobile, String userId);
+
 }

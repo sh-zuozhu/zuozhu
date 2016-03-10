@@ -1,6 +1,9 @@
 package com.xiaya.serviceimpl;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.xiaya.core.pojo.ActionResult;
 import com.xiaya.core.pojo.StatusCode;
-import com.xiaya.core.utils.DateUtils;
 import com.xiaya.core.utils.PWCode;
 import com.xiaya.core.utils.ValidateParamsUtils;
 import com.xiaya.mapper.UserCenterMapper;
@@ -16,7 +18,7 @@ import com.xiaya.pojo.UserCenter;
 import com.xiaya.rpc.service.IUserCenterService;
 
 @Service
-public class UserCenterServiceImpl implements IUserCenterService{
+public class UserCenterServiceImpl extends BaseService implements IUserCenterService {
 
 	@Autowired
 	private UserCenterMapper userCenterMapper;
@@ -56,50 +58,7 @@ public class UserCenterServiceImpl implements IUserCenterService{
 		return new ActionResult(StatusCode.SERVER_ERROR_CODE, "register failed!", null);
 	}
 
-	/**
-	 * 初始化用户信息
-	 * @param userCenter
-	 * @return
-	 */
-	private UserCenter initUserInfo(UserCenter userCenter){
-		userCenter.setUserId(PWCode.getUUID());
-		userCenter.setActiveCode(PWCode.getUUID());
-		userCenter.setCreateTime(new Date());
-		userCenter.setUpdatedTime(userCenter.getCreateTime());
-		userCenter.setPassword(PWCode.getPassWordCode(userCenter.getPassword()));
-		return userCenter;
-	}
 	
-	/**
-	 * 注册,校验参数
-	 * @param userCenter
-	 * @param mobileCode
-	 * @return
-	 */
-	private ActionResult validateRegisterParams(UserCenter userCenter, String mobileCode){
-				//校验参数
-				if(null == userCenter) return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "用户信息对象为空", null); 
-				if(StringUtils.isEmpty(userCenter.getMobile()) && StringUtils.isEmpty(userCenter.getEmail()) && StringUtils.isEmpty(userCenter.getUserName()))
-					return new ActionResult(StatusCode.PARAMS_EEROR_CODE, "参数非法", null);
-				if(StringUtils.isEmpty(userCenter.getPassword())) return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "密码不能为空", null);
-				if(StringUtils.isEmpty(mobileCode)) return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "手机短信验证码不能为空", null);
-				if(StringUtils.isNotEmpty(userCenter.getMobile()) && !ValidateParamsUtils.regMobile(userCenter.getMobile())){
-					return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "手机号格式不正确", null);
-				}
-				if(StringUtils.isNotEmpty(userCenter.getEmail()) && !ValidateParamsUtils.regEmail(userCenter.getEmail())){
-					return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "邮箱格式不正确", null);
-				}
-				if(StringUtils.isNotEmpty(userCenter.getPassword()) && !ValidateParamsUtils.regPassword(userCenter.getPassword())){
-					return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "密码格式不正确", null);
-				}
-				if(StringUtils.isNotEmpty(userCenter.getMobile())){
-					UserCenter user = this.userCenterMapper.selectOne(new UserCenter(userCenter.getMobile()));
-					if(null != user){
-						return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "您的手机号码在" + DateUtils.Date2String(user.getCreateTime(), "yyyy-MM-dd HH:mm:ss") + "已注册,如忘记密码,请通过手机或者邮箱找回");
-					}
-				}
-				return new ActionResult(StatusCode.SUCCESS_CODE, "success");
-	}
 
 	/**
 	 * 用户登录
@@ -129,5 +88,71 @@ public class UserCenterServiceImpl implements IUserCenterService{
 		this.userCenterMapper.updateByParamsSelective(uc);
 		return new ActionResult(StatusCode.SUCCESS_CODE, "login success");
 	}
+
+	/**
+	 * 校验用户名或者email是否注册过
+	 */
+	@Override
+	public ActionResult isNameOrEmailUse(UserCenter userCenter) {
+		if(null != userCenter && StringUtils.isEmpty(userCenter.getUserName()) && StringUtils.isEmpty(userCenter.getEmail())){
+			return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "请输入用户名或者email!");
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		List<UserCenter> result;
+		if(StringUtils.isNotEmpty(userCenter.getUserName())){
+			params.put("userName", userCenter.getUserName());
+			result = this.userCenterMapper.selectByMap(params);
+			if(result.size() > 0){
+				return new ActionResult(StatusCode.PARAMS_EEROR_CODE, "您输入的用户已经注册过了");
+			}
+			return new ActionResult(StatusCode.SUCCESS_CODE, "您输入的用户可以注册");
+		}
+		if(StringUtils.isNotEmpty(userCenter.getEmail())){
+			params.put("email", userCenter.getEmail());
+			result = this.userCenterMapper.selectByMap(params);
+			if(result.size() > 0){
+				return new ActionResult(StatusCode.PARAMS_EEROR_CODE, "您输入的email已经注册过了");
+			}
+			return new ActionResult(StatusCode.SUCCESS_CODE, "您输入的email可以注册");
+		}
+		return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "您输入的参数有误!");
+	}
+
+	/**
+	 * 验证手机号是否注册过
+	 */
+	@Override
+	public ActionResult isMobileUse(String mobile) {
+		if(!ValidateParamsUtils.regMobile(mobile)){
+			return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "您输入的手机格式不正确");
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("mobile", mobile);
+		List<UserCenter> result = this.userCenterMapper.selectByMap(params);
+		if(result.size() > 0){
+			return new ActionResult(StatusCode.MOBILE_REGISTER_CODE, "您的手机号码已经注册过!");
+		}
+		return new ActionResult(StatusCode.SUCCESS_CODE, "您的手机号可以注册!");
+	}
+
+	/**
+	 * 验证手机号除了自己之外是否注册过
+	 */
+	@Override
+	public ActionResult isMobileUseExceptMine(String mobile, String userId) {
+		if(!ValidateParamsUtils.regMobile(mobile)){
+			return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "您输入的手机格式不正确");
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("mobile", mobile);
+		params.put("userId", userId);
+		List<UserCenter> result = this.userCenterMapper.selectByMap(params);
+		if(result.size() > 0){
+			return new ActionResult(StatusCode.MOBILE_REGISTER_CODE, "您的手机号码已经注册过!");
+		}
+		return new ActionResult(StatusCode.SUCCESS_CODE, "您的手机号可以注册!");
+	}
+	
+	
 	
 }

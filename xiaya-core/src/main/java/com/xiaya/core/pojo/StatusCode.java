@@ -27,6 +27,7 @@ public class StatusCode implements Serializable {
 	public static final String PARAMS_NOT_VALIDATE_CODE = "40010000004";
 	/***********************用户中心相关状态码**********************************/
 	public static final String NO_LOGIN = "40010000001";
+	public static final String MOBILE_REGISTER_CODE = "40010000100";
 	/***********************用户中心相关状态码**********************************/
 	
 	

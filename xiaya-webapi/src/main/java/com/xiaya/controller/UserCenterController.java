@@ -1,5 +1,6 @@
 package com.xiaya.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class UserCenterController {
 	@Autowired
 	private IUserCenterService userCenterService;
 	
+	@JsonResult(desc="获取用户信息2")
 	@RequestMapping(value="user/info")
 	public ModelAndView getUserInfo(String account, Model model){
 		ModelAndView mv = new ModelAndView();
@@ -34,7 +36,6 @@ public class UserCenterController {
 		model.addAttribute("user", user);
 		return mv;
 	}
-	
 	
 	@JsonResult(desc="获取用户信息")
 	@RequestMapping("user/user")
@@ -60,5 +61,25 @@ public class UserCenterController {
 	@RequestMapping("login")
 	public ActionResult login(UserCenter userCenter){
 		return this.userCenterService.login(userCenter);
+	}
+	
+	@JsonResult(desc = "验证用户或者email是否注册过")
+	@RequestMapping("isNameOrEmailUse")
+	public ActionResult isNameOrEmailUse(UserCenter userCenter){
+		return this.userCenterService.isNameOrEmailUse(userCenter);
+	}
+	
+	@JsonResult(desc = "验证手机号是否被注册过,验证手机号除了自己之外是否被注册")
+	@RequestMapping({"isMobileUse","isMobileUseExceptMine"})
+	public ActionResult isMobileUse(String mobile, String userId){
+		if(StringUtils.isEmpty(mobile)){
+			return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "mobile is empty");
+		}
+		if(StringUtils.isEmpty(userId) && StringUtils.isNotEmpty(mobile)){
+			return this.userCenterService.isMobileUse(mobile);
+		}else if(StringUtils.isNotEmpty(userId) && StringUtils.isNotEmpty(mobile)){
+			return this.userCenterService.isMobileUseExceptMine(mobile, userId);
+		}
+		return new ActionResult(StatusCode.PARAMS_NOT_VALIDATE_CODE, "params isn't validate");
 	}
 }
