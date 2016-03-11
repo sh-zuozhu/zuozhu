@@ -3,6 +3,7 @@ package com.xiaya.core.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -102,4 +103,44 @@ public class JsonUtils {
 		return uStr;
 	}
 
+    /**
+     * 从json串中获取指定key的value
+     * @param result
+     * @param key
+     * @return
+     */
+    public static String getString(String result, String key){
+    	if(StringUtils.isNotEmpty(result) && result.startsWith("[")){
+    		result = result.substring(1, result.length()-1);
+    	}
+    	String str = JSONObject.fromObject(result).getString(key);
+    	return convertJson(str);
+    }
+    
+    /**
+     * 获取指定json的所有value,以","隔开
+     * @param result
+     * @return
+     */
+    public static String getValue(String result){
+    	Collection<?> values = JSONObject.fromObject(result).values();
+    	String str = values.toString();
+    	return convertJson(str);
+    }
+    
+    private static String convertJson(String result){
+    	if(StringUtils.isNotEmpty(result)){
+    		if(result.startsWith("[")){
+    			result = result.substring(1, result.length() - 1);
+    		}
+    		return result;
+    	}
+    	return null;
+    }
+    
+    public static void main(String[] args) {
+		String result = "[{'code':200,'data':[{'code':200,'data':{'1457602855053':'e85b6cbbf156348fe4e0e0883b85a191'},'msg':'success','ok':true}],'ok':true}]";
+		String str = getValue(getString(getString(result, "data"), "data"));
+		System.out.println(str);
+	}
 }
