@@ -1,6 +1,11 @@
 package com.xiaya.serviceimpl;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -15,8 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xiaya.core.factory.HttpClientFactory;
+import com.xiaya.core.httputils.HttpClientUtils;
 import com.xiaya.core.pojo.ActionResult;
 import com.xiaya.core.pojo.StatusCode;
+import com.xiaya.core.utils.ImageUtil;
 import com.xiaya.core.utils.JsonUtils;
 import com.xiaya.rpc.service.IUserAvatarService;
 
@@ -87,6 +94,35 @@ public class UserAvatarServiceImpl extends BaseService implements IUserAvatarSer
 		} catch (IOException e) {
 			return new ActionResult(StatusCode.SERVER_ERROR_CODE, "upload failed!", null);
 		}
+	}
+
+	
+	/**
+	 * 裁剪用户头像,并保存
+	 */
+	@Override
+	public ActionResult cutAvatar(String imgUrl, Integer x, Integer y, Integer destWidth, Integer destHeight) {
+		//校验参数合法性
+		
+		try {
+			//修改头像,并上传
+			byte[] imgByte = HttpClientUtils.getByte(imgUrl);
+			if(null == imgByte){
+				return new ActionResult(StatusCode.PARAMS_EMPTY_CODE, "您没有上传头像");
+			}
+			//裁剪图片
+			BufferedImage cutImage = ImageUtil.abscut(new ByteArrayInputStream(imgByte), x, y, destWidth, destHeight);
+			
+			//保存到本地
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			ImageIO.write(cutImage, "JPEG", os);
+			
+			
+		} catch (IOException e) {
+			return new ActionResult(StatusCode.CUT_IMAGE_CODE, "剪切头像异常:" + e.getMessage());
+		}
+		
+		return null;
 	}
 	
 //	public static String imagePostParams(String url, Map<String, String> params,MultipartFile image) throws IOException{

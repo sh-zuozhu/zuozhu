@@ -23,4 +23,10 @@ public class UserAvatarController {
 	public ActionResult uploadAvatar(MultipartFile image) throws IOException{
 		return this.userAvatarService.upload(image);
 	}
+	
+	@JsonResult(desc="裁剪用户头像,并保存")
+	@RequestMapping("cut")
+	public ActionResult cutAvatar(String imgUrl, Integer x, Integer y, Integer destWidth, Integer destHeight){
+		return this.userAvatarService.cutAvatar(imgUrl, x, y, destWidth, destHeight);
+	}
 }

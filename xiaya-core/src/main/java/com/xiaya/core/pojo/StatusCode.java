@@ -28,6 +28,7 @@ public class StatusCode implements Serializable {
 	/***********************用户中心相关状态码**********************************/
 	public static final String NO_LOGIN = "40010000001";
 	public static final String MOBILE_REGISTER_CODE = "40010000100";
+	public static final String CUT_IMAGE_CODE = "40010000101";
 	/***********************用户中心相关状态码**********************************/
 	
 	

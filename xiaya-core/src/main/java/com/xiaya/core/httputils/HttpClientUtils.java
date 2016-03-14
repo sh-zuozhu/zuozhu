@@ -14,12 +14,18 @@ import java.util.Set;
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -222,6 +228,29 @@ public class HttpClientUtils {
 	
 	public static String get(String url, Object params, List<Cookie> cookies) throws Exception{
 		return get(url, buildParameter(params), cookies);
+	}
+	
+	 /**
+     * 将网络文件下载转换为byte
+     * @param url
+     * @return
+     */
+	@SuppressWarnings({ "resource", "deprecation" })
+    public static byte [] getByte(String url){  
+		try { 
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(url);
+            HttpResponse ht = httpClient.execute(httpGet);
+            
+            if(ht.getStatusLine().getStatusCode() != HttpStatus.SC_OK)
+            	return null;
+            
+            HttpEntity entity = ht.getEntity();  
+            return EntityUtils.toByteArray(entity);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }   
+        return null;
 	}
 }
 

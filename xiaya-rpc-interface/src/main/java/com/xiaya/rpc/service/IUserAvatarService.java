@@ -16,4 +16,15 @@ public interface IUserAvatarService {
 	 */
 	ActionResult upload(MultipartFile image) throws IOException;
 
+	/**
+	 * 裁剪头像并保存
+	 * @param imgUrl
+	 * @param x
+	 * @param y
+	 * @param destWidth
+	 * @param destHeight
+	 * @return
+	 */
+	ActionResult cutAvatar(String imgUrl, Integer x, Integer y, Integer destWidth, Integer destHeight);
+
 }
