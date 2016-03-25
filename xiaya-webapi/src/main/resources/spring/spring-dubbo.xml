@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+			http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	>
+	
+	<!-- dubbo 支持注解 -->
+	<dubbo:annotation />
+	<context:component-scan base-package="com.xiaya.serviceimpl">
+	    <context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service" />
+	</context:component-scan>
+	
+	<!-- dubbo 配置 -->
+    <dubbo:application name="ucenter-server" />
+<!--     <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" /> -->
+    <dubbo:registry protocol="zookeeper" address="172.16.11.143:2181" />
+    <dubbo:monitor protocol="registry" />
+    
+     <dubbo:protocol name="dubbo" /> 
+    
+<!--     <dubbo:reference id="smsService3" interface="com.b5m.sms.service.SMSService3" check="false"  retries="0"/> -->
+<!--     <dubbo:reference id="smsService" interface="com.b5m.sms.service.SMSService" check="false"/> -->
+      <dubbo:reference id="taskSmsService" interface="com.b5m.sms.service.task.SMSService" check="false"/>
+</beans>
